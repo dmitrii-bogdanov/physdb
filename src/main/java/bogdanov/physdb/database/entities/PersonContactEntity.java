@@ -25,6 +25,9 @@ public class PersonContactEntity {
     @Column(name = "lastname_ru", nullable = false)
     private String lastnameRu;
 
+    @Column(name = "patronymic_ru")
+    private String patronymicRu;
+
     @Column(name = "email_1")
     private String email1;
 
@@ -35,7 +38,6 @@ public class PersonContactEntity {
     private String phoneNumber;
 
     @OneToOne
-    @MapsId
     private PersonEntity person;
 
     @Column(name = "info_id")

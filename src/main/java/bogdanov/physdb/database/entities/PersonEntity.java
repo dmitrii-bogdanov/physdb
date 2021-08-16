@@ -26,5 +26,4 @@ public class PersonEntity {
     @OneToOne(targetEntity = PersonContactEntity.class)
     private PersonContactEntity contact;
 
-
 }

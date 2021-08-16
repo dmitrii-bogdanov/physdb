@@ -14,7 +14,6 @@ import javax.persistence.*;
 public class PersonEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "person_id")
     private long id;
 
@@ -24,12 +23,8 @@ public class PersonEntity {
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
-    @Column(name = "middlename")
-    private String middlename;
-
-    @Column(name = "lang", nullable = false)
-    private String lang;
-
+    @OneToOne(targetEntity = PersonContactEntity.class)
+    private PersonContactEntity contact;
 
 
 }

@@ -26,6 +26,9 @@ public class ProjectEntity {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "info_id")
+    private Long infoId;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "created_by", referencedColumnName = "user_id")
     private UserEntity createdBy;
@@ -33,8 +36,8 @@ public class ProjectEntity {
     @Column(name = "creation_date")
     private Date creationDate;
 
-    @Column(name = "last_modification_date")
-    private Date lastModificationDate;
+    @Column(name = "is_active")
+    private boolean isActive;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sup_project_id", referencedColumnName = "project_id")

@@ -28,8 +28,8 @@ public class PersonContactEntity {
     @Column(name = "patronymic_ru")
     private String patronymicRu;
 
-    @Column(name = "email_1")
-    private String email1;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "email_2")
     private String email2;

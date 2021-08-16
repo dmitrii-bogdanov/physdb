@@ -24,4 +24,7 @@ public class JournalEntity {
     @Column(name = "abbreviation", nullable = false)
     private String abbreviation;
 
+    @Column(name = "website")
+    private String website;
+
 }

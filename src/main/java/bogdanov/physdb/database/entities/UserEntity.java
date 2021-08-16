@@ -5,11 +5,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
-
 @Entity
 @Table(name = "users")
 public class UserEntity {
@@ -22,10 +23,19 @@ public class UserEntity {
     @Column(name = "username", nullable = false)
     private String username;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "firstname", nullable = false)
     private String firstname;
 
     @Column(name = "lastname", nullable = false)
     private String lastname;
+
+    @Column(name = "email")
+    private String email;
+
+    @OneToMany(targetEntity = ProjectEntity.class, mappedBy = "createdBy", fetch = FetchType.LAZY)
+    private List<ProjectEntity> createdProjects = new ArrayList<>();
 
 }

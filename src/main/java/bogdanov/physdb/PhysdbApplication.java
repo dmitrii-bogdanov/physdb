@@ -9,10 +9,6 @@ public class PhysdbApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PhysdbApplication.class, args);
-
-		Initialization initialization = new Initialization();
-
-		initialization.run();
 	}
 
 }

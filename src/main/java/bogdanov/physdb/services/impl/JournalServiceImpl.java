@@ -1,4 +1,8 @@
 package bogdanov.physdb.services.impl;
 
-public class JournalServiceImpl {
+import bogdanov.physdb.services.JournalService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class JournalServiceImpl implements JournalService {
 }

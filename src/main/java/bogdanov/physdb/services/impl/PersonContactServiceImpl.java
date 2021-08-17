@@ -1,4 +1,8 @@
 package bogdanov.physdb.services.impl;
 
-public class PersonContactServiceImpl {
+import bogdanov.physdb.services.PersonContactService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class PersonContactServiceImpl implements PersonContactService {
 }

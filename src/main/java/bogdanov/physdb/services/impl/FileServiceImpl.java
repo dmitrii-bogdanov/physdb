@@ -1,4 +1,8 @@
 package bogdanov.physdb.services.impl;
 
-public class FileServiceImpl {
+import bogdanov.physdb.services.FileService;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FileServiceImpl implements FileService {
 }

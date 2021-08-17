@@ -15,10 +15,28 @@ import java.util.Random;
 public class temp {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
-        testBCryptTime(100, 13);
-//        for (int i = 4; i <= 31; i++) {
-//            testBCryptTime(100, i);
-//        }
+
+        BCryptPasswordEncoder enc = new BCryptPasswordEncoder(11);
+        String raw = "AFgJ^!5vd@6QTpLt";
+        System.out.println(raw);
+        String psw = enc.encode(raw);
+        System.out.println(psw);
+        enc = new BCryptPasswordEncoder(5);
+        Boolean m, u = null;
+        long time = System.nanoTime();
+        if (m = enc.matches(raw, psw)) {
+            if (u = enc.upgradeEncoding(psw)) {
+                psw = enc.encode(raw);
+            }
+        }
+        time = System.nanoTime() - time;
+        System.out.println(m);
+        System.out.println(u);
+        System.out.println(psw);
+        System.out.println(time);
+        System.out.println(enc.matches(raw, psw));
+
+
     }
 
     private static void testBCryptTime(int number, Integer strength) {

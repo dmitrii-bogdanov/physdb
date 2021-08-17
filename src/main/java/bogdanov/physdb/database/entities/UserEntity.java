@@ -35,6 +35,9 @@ public class UserEntity {
     @Column(name = "email")
     private String email;
 
+    @Column(name = "is_enabled")
+    private boolean isEnabled = false;
+
     @OneToMany(targetEntity = ProjectEntity.class, mappedBy = "createdBy", fetch = FetchType.LAZY)
     private List<ProjectEntity> createdProjects = new ArrayList<>();
 

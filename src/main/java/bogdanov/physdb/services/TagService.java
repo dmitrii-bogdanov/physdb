@@ -1,4 +1,4 @@
 package bogdanov.physdb.services;
 
-public class TagService {
+public interface TagService {
 }

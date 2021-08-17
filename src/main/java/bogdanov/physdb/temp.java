@@ -1,6 +1,7 @@
 package bogdanov.physdb;
 
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.xml.bind.DatatypeConverter;
@@ -9,12 +10,147 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Random;
 
 public class temp {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
+        testBCryptTime(100, 13);
+//        for (int i = 4; i <= 31; i++) {
+//            testBCryptTime(100, i);
+//        }
+    }
+
+    private static void testBCryptTime(int number, Integer strength) {
+        BCryptPasswordEncoder bCryptPasswordEncoder;
+        if (strength == null) {
+            bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        } else {
+            bCryptPasswordEncoder = new BCryptPasswordEncoder(strength);
+        }
+        long[] time = new long[number];
+        String[] password = getRandomStrings(number);
+        String[] encoded = new String[password.length];
+        for (int i = 0; i < number; i++) {
+            time[i] = System.nanoTime();
+            encoded[i] = bCryptPasswordEncoder.encode(password[i]);
+            time[i] = System.nanoTime() - time[i];
+        }
+        time = Arrays.stream(time).sorted().toArray();
+//        Arrays.stream(time).forEach(System.out::println);
+        long average = (long) Arrays.stream(time).average().getAsDouble();
+        System.out.printf(
+                "%s\n\nENCODE :\n\tstr : %d\n\tsize : %d\n\ttime :\n\t\tmin : %d.%d ms\n\t\tmax : %d.%d ms\n\t\tavg : %d.%d ms\n\n",
+                "---------------------------",
+                strength,
+                time.length,
+                time[0] / 1_000_000,
+                time[0] / 1_000 % 1_000,
+                time[time.length - 1] / 1_000_000,
+                time[time.length - 1] / 1_000 % 1_000,
+                average / 1_000_000,
+                average / 1_000 % 1_000
+        );
+        boolean[] matches = new boolean[number];
+        for (int i = 0; i < number; i++) {
+            time[i] = System.nanoTime();
+            matches[i] = bCryptPasswordEncoder.matches(password[i], encoded[i]);
+            time[i] = System.nanoTime() - time[i];
+        }
+        time = Arrays.stream(time).sorted().toArray();
+//        Arrays.stream(time).forEach(System.out::println);
+        average = (long) Arrays.stream(time).average().getAsDouble();
+        boolean result = true;
+        for (boolean m : matches) {
+            result &= m;
+        }
+        System.out.printf(
+                "MATCHES : %s\n\tstr : %d\n\tsize : %d\n\ttime :\n\t\tmin : %d.%d ms\n\t\tmax : %d.%d ms\n\t\tavg : %d.%d ms\n\n",
+                result,
+                strength,
+                time.length,
+                time[0] / 1_000_000,
+                time[0] / 1_000 % 1_000,
+                time[time.length - 1] / 1_000_000,
+                time[time.length - 1] / 1_000 % 1_000,
+                average / 1_000_000,
+                average / 1_000 % 1_000
+        );
+    }
+
+    private static String[] getRandomStrings(int number) {
+        String[] strings = new String[number];
+        Random gen = new Random(System.nanoTime());
+        StringBuilder sb;
+        int i, j;
+        for (i = 0; i < strings.length; i++) {
+            sb = new StringBuilder();
+            for (j = 0; j < (8 + gen.nextInt(9)); j++) {
+                sb.append((char) (33 + gen.nextInt(94)));
+            }
+            strings[i] = sb.toString();
+        }
+//        Arrays.stream(strings).forEach(System.out::println);
+        return strings;
+    }
+
+    private static void testBCrypt() {
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String plainPassword = "dfoJnejf83j21!A";
+        String encodedPassword;
+        Long time = System.nanoTime();
+        encodedPassword = bCryptPasswordEncoder.encode(plainPassword);
+        time = System.nanoTime() - time;
+        System.out.printf(
+                "time : %d ms %d mcs %d ns --- %d ns\n",
+                time / 1_000_000,
+                time / 1_000 % 1_000,
+                time % 1_000,
+                time
+        );
+        System.out.println(encodedPassword.length());
+        System.out.println(encodedPassword);
+        String encodedPassword2;
+        time = System.nanoTime();
+        encodedPassword2 = bCryptPasswordEncoder.encode(plainPassword);
+        time = System.nanoTime() - time;
+        System.out.printf(
+                "time : %d ms %d mcs %d ns --- %d ns\n",
+                time / 1_000_000 % 1_000,
+                time / 1_000 % 1_000,
+                time % 1_000,
+                time
+        );
+        System.out.println(encodedPassword2.length());
+        System.out.println(encodedPassword2);
+        System.out.println("encoded2 == encoded1 : " + encodedPassword2.equals(encodedPassword));
+        boolean matches;
+        time = System.nanoTime();
+        matches = bCryptPasswordEncoder.matches(plainPassword, encodedPassword);
+        time = System.nanoTime() - time;
+        System.out.printf(
+                "time : %d ms %d mcs %d ns --- %d ns\n",
+                time / 1_000_000 % 1_000,
+                time / 1_000 % 1_000,
+                time % 1_000,
+                time
+        );
+        System.out.println("plain matches encoded1 : " + matches);
+        time = System.nanoTime();
+        matches = bCryptPasswordEncoder.matches(plainPassword, encodedPassword2);
+        time = System.nanoTime() - time;
+        System.out.printf(
+                "time : %d ms %d mcs %d ns --- %d ns\n",
+                time / 1_000_000 % 1_000,
+                time / 1_000 % 1_000,
+                time % 1_000,
+                time
+        );
+        System.out.println("plain matches encoded2 : " + matches);
+        System.out.println("sdfsdf matches encoded : " + bCryptPasswordEncoder.matches("sdfsdf", encodedPassword));
+    }
+
+    private static void testMd5() throws IOException, NoSuchAlgorithmException {
         File file = new File("tmp.txt");
         byte[] bytes = getRandomFile(file);
         FileInputStream input = new FileInputStream(file);
@@ -23,15 +159,15 @@ public class temp {
         DigestInputStream din = new DigestInputStream(in, md);
         MultipartFile multiFile = new MockMultipartFile("multitmp.txt", "tmp.txt", "text/plain", din);
         byte[] digest = md.digest();
-//        System.out.println(md.digest().equals(bytes));
-//        System.out.println(digest);
-//        System.out.println(Arrays.toString(md.digest()));
-//        System.out.println(bytes.equals(multiFile.getBytes()));
-//        System.out.println(Arrays.toString(bytes));
-//        System.out.println(Arrays.toString(multiFile.getBytes()));
-//        in = new ByteArrayInputStream(multiFile.getBytes());
-//        din = new DigestInputStream(in, md);
-//        byte[] bytes2 = din.readAllBytes();
+        System.out.println(md.digest().equals(bytes));
+        System.out.println(digest);
+        System.out.println(Arrays.toString(md.digest()));
+        System.out.println(bytes.equals(multiFile.getBytes()));
+        System.out.println(Arrays.toString(bytes));
+        System.out.println(Arrays.toString(multiFile.getBytes()));
+        in = new ByteArrayInputStream(multiFile.getBytes());
+        din = new DigestInputStream(in, md);
+        byte[] bytes2 = din.readAllBytes();
         System.out.println(digest.equals(md.digest(multiFile.getBytes())));
         System.out.println(Arrays.toString(digest));
         System.out.println(Arrays.toString(md.digest(bytes)));

@@ -1,4 +1,4 @@
 package bogdanov.physdb.services;
 
-public class JournalService {
+public interface JournalService {
 }

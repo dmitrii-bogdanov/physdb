@@ -1,4 +1,4 @@
 package bogdanov.physdb.services;
 
-public class ConferenceService {
+public interface ConferenceService {
 }

@@ -32,17 +32,16 @@ public class UserController {
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getAll() {
-
-        userService.addTestUser();
-
         return userService.getAll();
     }
 
+    //TODO DELETE
     @PostMapping("/login")
     public UserDTO loginIsSuccessful(@RequestBody UserRegistrationDTO user) {
         return userService.loginIsSuccessful(user);
     }
 
+    //TODO DELETE
     @GetMapping("/allentities")
     public List<UserEntity> getAllEntities(){
         return userService.getAllEntities();

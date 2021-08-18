@@ -62,6 +62,8 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll().stream().map(mapper::convert).collect(Collectors.toList());
     }
 
+    //TODO DELETE TEST METHODS
+    //region TEST METHODS
     @Override
     public UserDTO addTestUser() {
         UserEntity user = new UserEntity();
@@ -102,6 +104,19 @@ public class UserServiceImpl implements UserService {
                 return mapper.convert(userEntity);
             }
         }
+        return null;
+    }
+    //endregion
+
+    //TODO
+    @Override
+    public UserDTO getById() {
+        return null;
+    }
+
+    //TODO
+    @Override
+    public UserDTO getByUsername(String username) {
         return null;
     }
 

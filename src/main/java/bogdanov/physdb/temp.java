@@ -11,11 +11,17 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Scanner;
 
 public class temp {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 
+
+
+    }
+
+    private static void testBCryptUpgrade() {
         BCryptPasswordEncoder enc = new BCryptPasswordEncoder(11);
         String raw = "AFgJ^!5vd@6QTpLt";
         System.out.println(raw);
@@ -35,8 +41,6 @@ public class temp {
         System.out.println(psw);
         System.out.println(time);
         System.out.println(enc.matches(raw, psw));
-
-
     }
 
     private static void testBCryptTime(int number, Integer strength) {

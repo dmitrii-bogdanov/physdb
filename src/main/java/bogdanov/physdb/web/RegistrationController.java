@@ -6,6 +6,7 @@ import bogdanov.physdb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,8 +31,9 @@ public class RegistrationController {
 
     @PostMapping("/registration")
     @ResponseBody
-    public UserDTO registerUser(@ModelAttribute("userForm") UserRegistrationDTO user) {
-        return userService.saveUser(user);
+    public UserDTO registerUser(@ModelAttribute("userRegistrationForm") UserRegistrationDTO userRegistrationForm,
+                                BindingResult errors, Model model) {
+        return userService.saveUser(userRegistrationForm);
     }
 
 }

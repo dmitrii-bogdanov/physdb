@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="https://thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <title>Registration page</title>
 </head>
 <body>
-<form method="POST" th:action="@{/registration}" th:object="@{userRegistrationForm}">
+<form th:action="@{/registration}" th:object="${userRegistrationDTO}" method="POST">
     <h2>Registration</h2>
     <div>
-        <label for="username"><input type="text" placeholder="Username" id="username" th:field="*{username}" required></label>
-        <label for="email"><input type="email" placeholder="Email address" id="email" th:field="*{email}" required></label>
+        <label value="123" for="username"><input type="text" placeholder="Username" id="username" th:field="*{username}" required></label>
+        <label value="123@123" for="email"><input type="email" placeholder="Email address" id="email" th:field="*{email}" required></label>
     </div>
     <div>
-        <label for="password"><input type="password" placeholder="Password" id="password" th:field="*{password}" required></label>
-        <label for="confirm_password"><input type="password" placeholder="Confirm Password" id="confirm_password" required></label>
+        <label value="123" for="password"><input type="password" placeholder="Password" id="password" th:field="*{password}" required></label>
+        <label value="123" for="confirm_password"><input type="password" placeholder="Confirm Password" id="confirm_password" required></label>
     </div>
     <div>
-        <label for="firstname"><input type="text" placeholder="First name" id="firstname" th:field="*{firstname}" required></label>
-        <label for="lastname"><input type="text" placeholder="Last name" id="lastname" th:field="*{lastname}" required></label>
+        <label value="123" for="firstname"><input type="text" placeholder="First name" id="firstname" th:field="*{firstname}" required></label>
+        <label value="123" for="lastname"><input type="text" placeholder="Last name" id="lastname" th:field="*{lastname}" required></label>
     </div>
-    <button type="submit">Confirm</button>
+    <input type="submit" value="Confirm"></input>
     <script>
         var password = document.getElementById("password")
             , confirm_password = document.getElementById("confirm_password");

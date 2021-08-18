@@ -5,6 +5,7 @@ import bogdanov.physdb.dto.UserDTO;
 import bogdanov.physdb.dto.UserRegistrationDTO;
 import bogdanov.physdb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class UserController {
         return userService.saveUser(user);
     }
 
-    @GetMapping("/all")
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<UserDTO> getAll() {
 
         userService.addTestUser();

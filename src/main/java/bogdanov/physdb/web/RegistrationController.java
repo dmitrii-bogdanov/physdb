@@ -25,15 +25,21 @@ public class RegistrationController {
 
     @GetMapping("/registration")
     public String registration(Model model) {
-//        model.addAttribute("userForm", new UserRegistrationDTO());
+        model.addAttribute("userRegistrationDTO", new UserRegistrationDTO());
         return "registration";
     }
 
     @PostMapping("/registration")
-    @ResponseBody
-    public UserDTO registerUser(@ModelAttribute("userRegistrationForm") UserRegistrationDTO userRegistrationForm,
+    public String registerUser(@ModelAttribute UserRegistrationDTO userRegistrationDTO,
                                 BindingResult errors, Model model) {
-        return userService.saveUser(userRegistrationForm);
+        model.addAttribute("user", userService.saveUser(userRegistrationDTO));
+        return "successfulRegistration";
+    }
+
+    @GetMapping("/users")
+    public String listUsers(Model model) {
+        model.addAttribute("users", userService.getAll());
+        return "usersTable";
     }
 
 }

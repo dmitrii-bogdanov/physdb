@@ -1,5 +1,6 @@
 package bogdanov.physdb.configs;
 
+import bogdanov.physdb.security.RefererRedirectionAuthenticationSuccessHandler;
 import bogdanov.physdb.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -22,8 +23,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().and().formLogin();
-//        httpSecurity.authorizeRequests().antMatchers(HttpMethod.POST, "/**").permitAll().and().formLogin();
+        httpSecurity.authorizeRequests()
+                .antMatchers("/registration").permitAll()
+                .anyRequest().authenticated()
+                .and().formLogin().defaultSuccessUrl("/users");
+//        httpSecurity.csrf().disable().authorizeRequests().antMatchers("/**").permitAll().and().formLogin();
     }
 
 

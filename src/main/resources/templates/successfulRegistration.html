@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <title>Success</title>
+</head>
+<body>
+  <h2>User <text th:text="${user.username}"></text> was registered</h2>
+  <p th:text="'username: ' + ${user.username}" />
+  <p th:text="'email: ' + ${user.email}" />
+  <p th:text="'firstname: ' + ${user.firstname}" />
+  <p th:text="'lastname: ' + ${user.lastname}" />
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>List of users</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width : 50%;
+        }
+        td, th {
+           border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background: #efefef;
+        }
+    </style>
+</head>
+<body>
+<!--<p>-->
+<!--    <span th:text="List of users"></span>-->
+<!--</p>-->
+
+<div th:if="${ not#lists.isEmpty(users)}">
+    <table>
+        <tr>
+            <th>id</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Name</th>
+            <th>isEnabled</th>
+        </tr>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.username}"></td>
+            <td th:text="${user.email}"></td>
+            <td th:text="${user.firstname} + ' ' + ${user.lastname}"></td>
+            <td th:text="${user.isEnabled}"></td>
+        </tr>
+        <table>
+</div>
+</body>
+</html>

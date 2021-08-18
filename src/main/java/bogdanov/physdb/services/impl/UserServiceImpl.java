@@ -44,12 +44,14 @@ public class UserServiceImpl implements UserService {
 
     //endregion
 
+    //TODO delete setEnabled()
     @Override
     public UserDTO saveUser(UserRegistrationDTO user) {
         UserEntity userEntity = mapper.convert(user);
         userEntity.setRoles(
                 Collections.singleton(mapper.convert(roleService.getByName("ROLE_USER")))
         );
+        userEntity.setEnabled(true);
         return mapper.convert(
                 userRepository.save(userEntity)
         );

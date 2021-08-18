@@ -3,13 +3,16 @@ package bogdanov.physdb.services.impl;
 import bogdanov.physdb.database.entities.RoleEntity;
 import bogdanov.physdb.database.entities.UserEntity;
 import bogdanov.physdb.database.repositories.UserRepository;
+import bogdanov.physdb.dto.RoleDTO;
 import bogdanov.physdb.dto.UserDTO;
 import bogdanov.physdb.dto.UserRegistrationDTO;
+import bogdanov.physdb.services.RoleService;
 import bogdanov.physdb.services.UserService;
 import bogdanov.physdb.services.mappers.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -21,6 +24,7 @@ public class UserServiceImpl implements UserService {
 
     private Mapper mapper;
     private UserRepository userRepository;
+    private RoleService roleService;
 
     //region Autowired Setters
     @Autowired
@@ -32,13 +36,19 @@ public class UserServiceImpl implements UserService {
     private void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
+    @Autowired
+    private void setRoleService(RoleService roleService) {
+        this.roleService = roleService;
+    }
+
     //endregion
 
     @Override
     public UserDTO saveUser(UserRegistrationDTO user) {
         UserEntity userEntity = mapper.convert(user);
         userEntity.setRoles(
-                Collections.singleton(new RoleEntity(1L, "ROLE_USER"))
+                Collections.singleton(mapper.convert(roleService.getByName("ROLE_USER")))
         );
         return mapper.convert(
                 userRepository.save(userEntity)
@@ -48,6 +58,49 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAll() {
         return userRepository.findAll().stream().map(mapper::convert).collect(Collectors.toList());
+    }
+
+    @Override
+    public UserDTO addTestUser() {
+        UserEntity user = new UserEntity();
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setId(1L);
+        roleDTO.setName("ROLE_USER");
+        System.out.println(roleDTO);
+        System.out.println(roleService.addRole(roleDTO));
+        user.setUsername("username");
+        user.setPassword(new BCryptPasswordEncoder(11).encode("password"));
+        user.setEmail("email");
+        user.setFirstname("firstname");
+        user.setLastname("lastname");
+        user.getRoles().add(mapper.convert(roleDTO));
+        System.out.println(user);
+        UserEntity saved = userRepository.save(user);
+        System.out.println(saved);
+
+        return mapper.convert(saved);
+    }
+
+    @Override
+    public List<UserEntity> getAllEntities() {
+        return userRepository.findAll();
+    }
+
+    @Autowired
+    private BCryptPasswordEncoder encoder;
+
+    @Override
+    public UserDTO loginIsSuccessful(UserRegistrationDTO user) {
+        System.out.println(user);
+        UserEntity userEntity = userRepository.findByUsername(user.getUsername());
+        System.out.println(userEntity);
+        if (userEntity != null) {
+            System.out.println(encoder.matches(user.getPassword(), userEntity.getPassword()));
+            if (encoder.matches(user.getPassword(), userEntity.getPassword())){
+                return mapper.convert(userEntity);
+            }
+        }
+        return null;
     }
 
     @Override

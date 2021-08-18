@@ -19,9 +19,9 @@ public class UserEntity implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "user_id")
-    private long id;
+    private Long id;
 
-//    @Column(name = "username", nullable = false)
+    @Column(nullable = false)
     private String username;
 
     @Column(name = "password", nullable = false)
@@ -36,7 +36,7 @@ public class UserEntity implements UserDetails {
     @Column(name = "email", nullable = false)
     private String email;
 
-    @Column(name = "is_enabled", nullable = false)
+    @Column(name = "is_enabled")
     private boolean isEnabled = false;
 
     @OneToMany(targetEntity = ProjectEntity.class, mappedBy = "createdBy", fetch = FetchType.LAZY)

@@ -108,16 +108,14 @@ public class UserServiceImpl implements UserService {
     }
     //endregion
 
-    //TODO
     @Override
-    public UserDTO getById() {
-        return null;
+    public UserDTO getById(long id) {
+        return mapper.convert(userRepository.getById(id));
     }
 
-    //TODO
     @Override
     public UserDTO getByUsername(String username) {
-        return null;
+            return mapper.convert(userRepository.findByUsername(username));
     }
 
     @Override

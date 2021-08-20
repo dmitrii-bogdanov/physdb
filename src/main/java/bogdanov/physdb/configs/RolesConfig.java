@@ -14,7 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @PropertySource("classpath:admin.properties")
-public class RolesConfig {
+public class    RolesConfig {
 
 
     @Autowired

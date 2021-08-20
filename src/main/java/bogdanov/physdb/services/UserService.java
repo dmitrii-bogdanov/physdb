@@ -21,7 +21,7 @@ public interface UserService extends UserDetailsService {
 
     public UserDTO loginIsSuccessful(UserRegistrationDTO user);
 
-    public UserDTO getById();
+    public UserDTO getById(long id);
 
     public UserDTO getByUsername(String username);
 

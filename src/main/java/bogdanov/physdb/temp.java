@@ -9,17 +9,88 @@ import java.io.*;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class temp {
 
     public static void main(String[] args) throws IOException, NoSuchAlgorithmException {
 
+        int iterations = 100;
+        int n = 20000000;
 
+        Map<Integer, Long> time = new TreeMap<>();
+        int[] array = new int[n];
+        Random generator = new Random(System.nanoTime());
+        for (int i = 0; i < array.length; i++) {
+            array[i] = generator.nextInt();
+        }
+
+        Set<Integer> ks = new TreeSet<>();
+        while (ks.size() < iterations) {
+            ks.add(generator.nextInt(array.length - 100) + 100);
+        }
+
+        Iterator<Integer> iterator = ks.iterator();
+        int k = 0;
+        for (int i = 0; i < iterations; i++) {
+            k = iterator.next();
+            time.put(k, findRandomElements(k, array, i));
+            System.out.println(k + " : " + time.get(k));
+        }
+        System.out.println("\n\t_______k : _______________time");
+        for (Map.Entry<Integer, Long> e : time.entrySet()) {
+            long t = e.getValue();
+            System.out.printf("\t%8d : %6dms_%3dmcs_%3dns%n", e.getKey(), t / 1_000_000, t / 1_000 % 1_000, t % 1000);
+        }
 
     }
+
+    private static long findRandomElements(int k, int[] array, int index) {
+        long time = System.nanoTime();
+        int[] randomElements = new int[k];
+
+        time = System.nanoTime();
+
+        Random generator = new Random(time);
+
+        block: {
+            if (k > (array.length >> 1)) {
+                int l = array.length;
+                int pos;
+                int tmp;
+                for (int i = 0; i < array.length-k; i++) {
+                    pos = generator.nextInt(l--);
+                    randomElements[i] = array[pos];
+                    tmp = array[pos];
+                    array[pos] = array[l];
+                    array[l] = tmp;
+                }
+                randomElements = Arrays.copyOfRange(array, 0, l);
+//                System.arraycopy(array, 0, randomElements, 0, k);
+                break block;
+            }
+
+            int l = array.length;
+            int pos;
+            int tmp;
+            for (int i = 0; i < k; i++) {
+                pos = generator.nextInt(l--);
+                randomElements[i] = array[pos];
+                tmp = array[pos];
+                array[pos] = array[l-1];
+                array[l-1] = tmp;
+            }
+//            System.arraycopy(array, l, randomElements, 0, k);
+
+        }
+
+        time = System.nanoTime() - time;
+
+        System.out.println(index + ") " + Arrays.hashCode(randomElements));
+
+        return time;
+    }
+
 
     private static void testBCryptUpgrade() {
         BCryptPasswordEncoder enc = new BCryptPasswordEncoder(11);
